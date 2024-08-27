@@ -1,0 +1,2 @@
+Write a binary search over vectors, iteratively (i.e using a loop), with the following prototype:
+int binary_search(cont vector)

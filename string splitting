@@ -1,0 +1,25 @@
+//String Splitting:
+
+
+vector <string> split(string s);
+
+split("The cat in the hat   ")
+
+
+//Finite State Machine:
+
+State: What are we doing now?
+
+Input Character: What is the next character?
+
+
+       input char     | _____ [Space]______ | ___________ Non [Space] __________
+state                  |                     |
+                       |   Ignore            |        Starts new word
+    SPACE              |    Stay in SPACE    |     Switch to WORD
+                       |_____________________|_____________________________________
+                       |                     |
+                       |    Finishes word    |      Adds to a word
+    WORD               |    Switch to SPACE  |      Stays in word 
+                       |                     |
+                  

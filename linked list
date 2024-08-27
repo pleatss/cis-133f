@@ -1,0 +1,68 @@
+Linked Lists:
+- O(1) - time insert(), erase()
+- O(n) - time, [i] (subscripting)
+
+ struct node 
+{
+    int value;
+    node*next;
+}; 
+
+
+        Insert(a): Case#1: Both a and b exist 
+
+            1. Create new node n 
+            2. Set n's next to point to be (a's next)
+            3. Set a's next to point to n
+            
+        (If you insert or erase code is wrong, its going to get stuck --- Order matters)
+
+Case#1: a == nullptr 
+
+    1. Create new node
+    2. Set n’s next to point to b (head)
+    3. Set head to point to n 
+
+
+Case #2: b == nullptr (Insert after tail)
+        1. Create new node
+        2. Set n’s next to nullptr (a’s next)
+        3. Set a’s next to point n 
+        4. Set tail to point to n 
+
+
+
+
+Case #3: a,b == nullptr (List is empty):
+        1. Create new node
+        2. Set n’s to nullptr (head)
+        3. Set head to point to n 
+        4. Set tail to point to n 
+        ^^^ Case #3 is the same as Case #1
+
+
+Erase(a) : Case#1: a, b !=nullptr
+    1. Call the target node n (a’s next)
+    2. Set a’s next to point to b (n’s next, a’s next,  next’s next)
+    3. Delete n
+
+
+
+
+Case #1: a == nullptr
+    1. Call the target node n
+    2. Set head to point to be (n’s next, head’s next)
+    3. Delete n 
+
+Case #2: b == nullptr 
+
+    1. Call the target node n 
+    2. Set a's next to nullptr (n's next)
+    3. Delete n 
+    4. Set tail to point to a
+
+Case #3: a,b == nullptr 
+    { 1. Call target n (head)
+    2. Set head to nullptr (n's next)
+    3. Delete n (target node) } -------- > These 3 steps are the same as case #1 
+   { 4. Set the tail to nullptr } -------- > Same as Case #2 

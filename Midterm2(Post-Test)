@@ -1,0 +1,132 @@
+Module 3 Recursion and Sorting
+
+Q:
+    void f(int* arr, int lan)
+    {
+        if(lan <=1)
+            return ;
+        else{
+            int t = arr[0];
+            arr[0]=arr[lan-1];
+            arr[lan-1]
+        }
+    }
+
+
+
+Q:
+    bool f(int a, int b)
+    {
+        if(a==0 and b)
+            return false;
+        else if(a==0)
+            return true;
+        else if(b==0)
+            return true;
+        else
+            return f(a-1, b-1);
+    }
+
+Q:
+    void sel_sort(vector<int>& v)
+    {
+        for(int i = 0; i < v.size(); ++i){
+            int smallest = i;
+
+        for(int j=i+1; j<v.size(); ++j)
+            if(v[j] < v[smallest])
+                smallest=j;
+            if(v[j-1] > v[j])
+                sorted=false;
+        .
+        .
+        .
+        std::swap(v[i], v[smallest]);
+        if(sorted)
+            return;
+        }
+    }
+
+Q: Make partition() "better":
+
+    int partition (vector<int>& v, int p);
+
+int better_partition(vector<int>& v)
+{
+    int p= v[rand() % v.size()] ;
+    do{
+        int mid = partition(v,p) ;
+        if(mid >= 0.25* v.size() and
+        mid <= 0.75* v.size())
+            return mid;
+        p=v[rand() % v.size()];
+    }while(true);
+}
+
+Q: Sort, in O(n)-time, a sequence containing a random permutation of the first n integers which are multiples of 3 or 5 but are NOT both:
+                            3,  5,  6,  9,  10, 12, 18, 20  ...
+
+void three_five_sort(vector<int>& v)
+{
+    int n=v.size();
+    v.clear();
+
+    int i=0;
+    while(v.size() < n){
+        if((i% 3==0 or i%5==0) and
+        (i%15 !=0))
+            v.push_back(i);
+        i=i+1 ;
+    }
+}
+
+Module 4: Binary Search Trees (BSTs)
+
+Q: Write find(e) for non-BST trees.
+
+node* find(node* root, int e)
+{
+    if(root==nullptr)   return nullptr; //Not found
+    else if(root->key==e)   return root; //Found!
+    else{ //root->key !=e
+        node* fl = find(root->left, e);
+        node* fr = find(root->right, e);
+
+        if(fl !=nullptr) return fl; //Found in left/both
+        else if(fr !=nullptr) return fr; //Found in right
+        else    return nullptr; //Not found!
+    }
+}
+
+Q: Print "fringe"
+
+void print_fringe(node* root)
+{
+    node* n = root;
+    if(root == nullptr) return; //Empty
+    while(n->left !=nullptr)
+        cout << n->left->key ;
+        n=n->left ;
+}
+cout << root->key;
+n=root;
+while(n->right !=nullptr){
+    cout << n->right ;
+    n=n->right;
+    }
+}
+
+Q: Use rotate(c,p) to push the root down to the right, as far as possible.
+
+void rotate(node* c, node* p)
+
+void push_down(node* root)
+{
+    while(root->left !=nullptr)
+        rotate(root->left, root);
+}
+
+Q: Insert into an AVL tree:
+
+10  5   2   16  -4  7   13  4
+

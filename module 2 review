@@ -1,0 +1,77 @@
+Queues: 
+        Stack: A sequence where elemenets are added/removed from the SAME AND TOP.
+                                        -> push 
+                                        <- pop
+
+Queue: A sequence where elements are added to one and (back) and removed from the other (front). - > FIFO
+                Back                                    Front
+            Enqueue ->                                  -> Dequeue
+            
+            Back                Front
+                3   2   1     
+
+                enqueue(1) 
+                enqueue(2)
+                enqueue(3)
+                dequeue() -> 1                  FIRST IN
+                dequeue() -> 2                  FIRST OUT
+                dequeue() -> 3                     FIFO
+
+The tail would be the back of the line, and the head would be the front of the line -- Which since queues are always executed in the order they come in, will be executed first
+
+------
+
+Array-Based Queues:
+
+    0   1   2   3   4   5
+
+Q:  1   2   3
+
+Capacity: 6 
+
+Front(f): 0      Back(b): 2
+
+Size(sz): 3
+
+-------------------------
+enqueue(1);             |   dequeue() -> 2
+enqueue(2);             |   dequeue() -> 3
+enqueue(3);             |   enqueue(6)
+dequeue() -> 1          |   enqueue(7)
+enqueue(4)
+enqueue(5)
+
+To enqueue:
+void enqueue(int x)
+{
+    if(sz == cap) /* Queue Overflow! */
+
+    ++b;
+    if(b == cap)
+        b = 0;
+
+    q[b] = x;
+    ++sz;
+}
+
+To dequeue something (just increment the front so its 1 past the front):
+
+void dequeue()
+{
+    if(sz == 0) ~~Queue Underflow!!~~
+    ++f;
+    if(f == cap)
+        f = 0;
+    
+    --sz;
+}
+
+Check size:
+
+int size()
+{
+    if( f <= b)
+        reutnr b - f +1;
+    else
+    return (b+1) (b-cap)
+}

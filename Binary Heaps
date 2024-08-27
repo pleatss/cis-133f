@@ -1,0 +1,159 @@
+Binary Heaps:
+
+
+    Operation: 
+
+    - Insert (x) O(log n)
+    - max()     -   O(1)
+    - extract_max() -   O(log n)
+
+
+A binary (max) heap is a complete binary tree with the heap order property:
+
+"At any node n, n is greater than both its children."
+
+Ex:
+                                    57 <- max O(1)
+                            50                    35
+                    19          36             30      32
+                7       10      25   29      48
+
+
+
+Insert(x):
+
+1. Add x to the next available spot in the bottom level of the tree.
+
+2. Fix-up
+
+Fix-Up(n):
+
+If n is less than < n's parent, then we stop -- we're done.
+
+Otherwise, swap n with n's parent and continue at the parent. 
+
+Stop if n is the root. 
+
+
+Extract Max()
+
+1. Copy the last, bottom most value to the root, then remove the last node.
+
+2. Fix-Down from the root.
+
+Fix-Down(n)
+
+If N is greater than both is children, stop ; we're done.
+
+Otherwise, swap with n's largest child and continue. 
+
+Stop if n has no children.
+
+---
+
+class heap{
+    public:
+    .
+    .
+    .
+        int max();
+        void insert(int x);
+        void extract_max();
+
+    private:
+        int* heap ;
+        int sz, cap ;
+
+        void fix_up(int i);
+        void fix_down(int i);
+};
+
+
+void heap::insert(int x)
+{
+    ++sz ;
+    heap[sz] = x;
+    fix_up(sz);
+}
+
+void heap::extract_max()
+{
+    heap[1]=heap[sz];
+    --sz;
+    fix_down(1);
+}
+
+
+void heap::fix_up(int i)
+{
+    while(i !=1 and heap[i] > heap[i/2]){       //i is NOT the root in the first portion i !=1 ----- In second portion, i is larger than its parent
+        swap(heap[i], heap[i/2]);
+        i=i/2;
+    }
+}
+
+void heap::fix_down(int i)
+{
+    while(2*i <=sz){ //i has at least a left child
+    //Find the largest of i, left(i), right(i)
+
+    int largest=i ;
+
+    if(heap[2*i] > heap[largest])
+        largest=2*i
+
+    if(2*i+1 <=sz and heap[2*i+1]>heap[largest])
+        largest=2*i+1;
+    }
+}
+
+Build Heap (from an unsorted array)
+
+Option 1:
+    1. Sort array in descending order -- O(n^2) or O(n log n)
+
+    2. Copy into heap array O(n)
+
+Option 2:
+    1. For each array element x
+        - heap.insert(x) O(log n)
+
+Option 3:
+    1. Copy the unsorted array into the heap array
+    
+    2. Starrting at the end of the array,
+        -fix_down(i)
+
+
+
+Disjoint Sets:
+
+rep(x): Returns the representative for the group containing x.
+
+2 students a and b are in the same group if:
+
+        rep (a) == rep(b)
+
+
+Merge (a,b): Merge the group containing a, with the group containing b. If a and b are in the same group, does nothing.
+
+
+
+
+
+Forest:
+
+rep(x): 1. get the node x
+        2. follow the parent pointers until we find the root O(n) worst case
+
+Merge(a,b): 1. Let a1 = rep(a)
+               Let b1 = rep(b) O(n)
+            2. Set a's parent = b's O(1)
+
+
+Optimizations: 1. Path Comparison: In rep, after finding the root, rewrite ALL the parents along the path to point DIRECTLY to the root (makes future rep()'s O(1)).
+               2. Merge-by-rank: When mergeing, make the tree with smaller rank the child.
+                               { Parent's rank          if child rank < parent rank
+               Parent's rank =   Parent rank + 1 if the child's rank == parent rank }
+
+               Rank is AN APPROXIMATION of tree height/size, which is a pretty energy consuming takins in O terms.

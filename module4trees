@@ -1,0 +1,76 @@
+Self Balancinb Trees
+
+These are trees that balanced in relation to each other, which could be apart of a larger tree.
+
+The only thing that changes sides on the tree from a left child of c to become a right child of p.
+
+These trees are like opposites to each other. One way we can take these functions is by using rotate, which a declaration of said function would look like:
+
+    void rotate(node* child, node* parent)
+
+    This is one function that does two things, rotating it to from the left to the right, or a right to the left
+
+
+The code for a self balancing tree would look something like:
+
+void rotate(node* c, node* p)
+{
+    if(c==p->left){
+        node* y = c->right ;
+        c->right=p ;
+        p->left=y ;
+    }
+    else if(c==p->right){
+        node* y = c->left ;
+        c->left=p ;
+        p->right=c ;
+    }
+} //This code handles both rotations, this being a simplified version of the code 
+
+
+Splay Trees: AMortized Self-Balancing 
+
+    After every operation (find, insert, remove), we perform what is called a splay, starting at the node of interest 
+        
+        splay(n):
+            While n is not the root:
+                - Zig: if n is a child of the root (having no grandparent)
+
+                If n is not a child of the root then we can analyze its parent/grandparent relationship
+
+                    - Zig-Zig: This case is when n is a left left, or right right grand child
+
+                    - Zig-Zag: This case is when n is a left-right or a right-left grandchild
+--
+
+Splay Based Removes
+    Remove 11 from a tree
+
+        1 - Splay the target node to the root
+        2 - Remove the root, creating 2 trees
+        3 - Splay the smallest value in the right tree (17) to the root
+        4 - Make the left tree a left child of the right 
+--
+
+AVL Trees
+    An AVL tree is a BST with the height balance property: 
+
+        "At any node n, the difference between the heights of the left and right children is never more than 1."
+
+                            abs(height(n->left) - height(n->right)) (less or greater) < 1
+
+A code snippet will look similalr to:
+
+struct node
+{
+    int key ; 
+    node* left ;
+    node* right ;
+
+    int height ;         // These two lines are for AVL trees
+    node* parent ; 
+};
+
+AVL Inbalances also may occur, where one side of the tree could be higher than the other, either occuring on the inside or the outside imbalance.
+
+        As we go inside or above the trees, we can find more imbalances, fixing lower ones will fix upper ones, but you dont have to fix all of them because they ae not always real imbalances 

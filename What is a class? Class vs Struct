@@ -1,0 +1,29 @@
+A class vs struct
+- "Aggregate" types
+-Use class if you have invariants (things that should always be true)
+-Use struct if you have no invariants
+
+            For class:
+            The default access is private. 
+            
+            class bag{
+                .
+
+            };
+            For struct:
+            The default access is public. 
+
+            struct point
+            {
+                float x;
+                float y;
+            };
+
+            (A lot of times you will not write struct into your program, unlike if(else) functions, you should be structuring the rest of your program so that the size cannot be greater than the capacity)
+
+#include <cossert>
+assert(______); '_____' is the condtion
+
+^^^^ You may see these but its not necessarily going to be apart of assignments
+cosserts are used for when things are true
+

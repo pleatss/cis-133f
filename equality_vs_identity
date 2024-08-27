@@ -1,0 +1,18 @@
+Equality:
+    When two things look the same 
+
+Identity:
+    Stronger than equality, when you have two things but they are actually the same thing (Where if you look at their addresses, they have the same address / if you change one, then the other one will change simultaneously)
+
+Move Semantics (Wont be tested on, but it is good to know about regardless):
+
+bag f()
+{
+    bag b(10)
+    .
+    .
+    .
+    .
+    return b;
+
+}

@@ -1,0 +1,28 @@
+Step wise analysis
+
+Pick some important operations (steps) and count how many times they occur for input size = n (unknown)
+
+Ex: Finding max element of a vector
+
+int max(vector<int> v)
+{
+    int m = v[0]; // Guess for the largest
+    for(int i = 0; i < v.size(); ++;)
+    if(v[i] > m )
+        m=v[i]; //Updates guess
+    
+return m;
+
+}
+
+
+Asymptotic Analysis (Big O)
+We say: 
+            f(n) = O(g(n))
+
+If there is k > 0, n > 0, such that for all n > n0
+
+                f(n) < k*g(n)
+            - K captures (hides) "proportionality"
+            - n0 captures "big enough n"
+            

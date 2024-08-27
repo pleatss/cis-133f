@@ -1,0 +1,236 @@
+A map is like a generalize array.
+
+
+ex:
+
+            float arr[100];
+                arr[ . . . ] -> float 
+                key             value
+            
+For arrays:
+    -The value can be nay type
+    - The key must be int(0 - m-1)
+
+
+Arrays are dense (stores all possible entires, not just the entries used).
+
+
+
+A map is like an array where:
+    - Key can be any type (string, float, ... )
+    - Sparse, not dense (only stores entries you've used)
+
+Example: We want to store salaries for employees given an employee name (string), we can lookup their salary (float):
+
+    Key: string
+    Value: float 
+
+        salaries["Joe"] = 56000.0 ; //Insert
+            .    key       value
+            .
+            .
+            cout << salaries["Joe"] << endl; //Prints 56000
+-
+
+Implementation #1: Array of entries 
+
+
+struct entry
+{
+    string key'
+    float value;
+};
+
+vector<entry> tbl;
+
+float lookup(string key)
+{
+    for(entry e: tbl)
+        if(e.key==key)
+            return e.value;
+
+    // Key not found!
+    throw key_not_found{};
+}
+
+void insert(string key, float value)
+{
+    for(entry& e:tbl)
+        if(e.key==key){
+            e.value=value;
+            return;
+        }
+
+//Key not found, add to end
+tbl.push_back({key.value});
+}
+
+Vector of entries: 
+
+    Memory (after n different inserts): O(n) (better than O(m), all of the possible keys)
+
+    Runtime of lookup: O(n)
+
+    Runtime of insert: O(n)
+-
+
+Implementation 2: BST on keys
+
+struct node
+{
+    string key;
+    float value;
+
+    node* left;
+    node* right;
+    .
+    .
+    .
+};
+
+value
+
+float   tbl[m];
+
+int hash(string, key);
+
+tbl[hash(s)]
+
+
+Memory(after n different inserts): O(n)(but with a large constant multiple)
+
+Runtime of lookup: O(1) (Like an array)
+
+Runtime of insert: O(1) (Like an array)
+
+
+
+Requirements for a (good) hash() function:
+
+-   Determinisitic: same inputs always product same outputs.
+
+            If s1 = s2 
+            Then hash(s1) = hash(s2)
+
+-   Uniform Distribution: All m possible outputs (0 ... m-1) occur with roughly equal frequency.
+
+-   Avalanche Effect: Similar inputs produce very different outputs.
+
+-   Low probability of collision: A collision is two different strings that produce the same output. I.e,
+
+        s1 =/ s2 but hash(s1) = hash(s2)
+
+                1/m^2
+
+
+Hash fun #1: String Length
+
+int hash(string s)
+{
+    return s.length() % m ;
+           (o ... m-1)
+}
+
+-   Deterministic: Yes
+
+-   Uniform Dist: No
+
+-   Avalanch Effect: No
+
+-   Prob of Collision: High
+
+
+
+Hash fun #2: First character:
+
+int hash(string s)
+{
+    return unsigned(s[0]) % m ;
+                0 . . . m-1
+}
+
+Determistic: Yes
+
+Uniform Dist: No
+
+Avalanche Eff: hash("bat) = hash("cat")-1
+
+Prob of collision: High!
+
+
+
+Hash fun #3:
+
+int hash(string s)
+{
+
+    int h=0 ;
+    for(char c : s)
+        h += unsigned(c);
+
+    return h %m ;
+            O ... m-1
+}
+
+Determistic: Yes
+
+Uniform Dist: No
+
+        Shortest: "A" (65)
+
+        Longest: 45 z's = 5490
+
+Avalanche Effect: No
+hash("cat") = hash("bat") + 1
+hash("tab") = hash("bat")
+
+Prob of Collision: High
+
+
+
+
+
+
+Base-256
+
+Base-10(Decimal):
+
+"2572" -> 2 * 10^0 + 7 * 10^1 + 5 * 10 ^2 + 2 * 10^2
+
+
+Base-8 (Octal):
+
+"273" -> 3 * 8^0 + 7 * 8^1 + 2 * 8^2
+
+int base256(string s)
+{
+    int k = 0 ;
+    for(int i = s.length()-1 ; i >= 0 ; --i)
+        k+= unsigned(s[i]) * pow(256, (s.length()-1)-i);
+
+    return k;
+}
+
+pow operates on floats, not ints/longs
+
+pow is slow
+
+256^2 = 65,536
+
+256^3
+
+int base256(string s)
+{
+    int k=0 ;
+    int p=1 ; //256^0 = 1
+    for(int i = s.length()-1; i >= 0; --i){
+        k += unsigned(s[i]) * p ;
+        p *= 250; // Next pow of 256
+    }
+
+    return k; 
+}
+
+Addition (+=): n
+
+Mult (*=, *): 2n 

@@ -1,0 +1,199 @@
+- Base Case(s): The simplest/smallest form of a problem (0,1,"",{}, ...)
+
+- Recursion Case(s): Cases larger than the base case, where the problem can be "made smaller"
+                    - Recursive Function Cell(s): The point where the function calls itself. 
+
+Categories of Recursive Functions:
+    - Linearly Recursive: One recursive function call per recursive case. 
+        
+        -Trail Recusive: No "work" done on the way "up"
+    
+    -Non-Linearly RecursiveA: More than one recrusive function call per case
+
+    (Check Photos on Phone for the diagram drawn in class)
+
+-  Work: The total number of recursive function calls 
+
+
+Mutual Recursion:
+
+bool is_even(int x);
+
+bool is_odd(int x);
+
+
+bool is_even(int x)
+{
+    if(x==0) return true;
+    else if(x==1) return false; //Base Case
+    else  
+        return is_odd(x-1); // Recursive Case
+}
+
+bool is_odd(int x)
+{
+    if(x==0) return false;
+    else if(x--1) return true; // Base Case 
+    else
+        return is_even(x-1); // Recrusive Case
+}
+
+Linearly Recurisve / Tail Recursive 
+
+
+is_even(5)  = False
+|
+v
+is_even(4)  = False
+|
+v
+is_even(3)  = False             // Same answer all the way up is how you know it is tail recursive 
+|
+v
+is_even(2)  = False
+|
+v
+is_even(1)  = False
+|
+v
+False
+
+Write a function:
+    int max(vector<int> v);
+
+Which returns the largest value in the non-empty vector v. 
+
+- Shrink? How can we maje the problem smaller?
+    - pop.back() - Removes the last element 
+    - .erase(...) - Removes any element
+
+- Grow?: How do we "expand" a smaller answer into the answer to the original problem
+
+- Base Case: Smallest form of the problem
+
+int max(vector<int> v)
+{
+    if(v.size() == 1)
+        return v[0];
+else{
+    int x = v.back();   // Last element 
+    v.pop_back();
+    int y  = max(v);    // Recursive Function Calls
+    return x > y ? x : y ;
+    }
+}
+
+^^^ Linearly Recursive 
+    NOT Tail Recursive
+
+int max(const vector<int>& v, int i = 0)
+{
+    if(i == v.size() - 1)
+        return[i] // Last element
+    else{ // i < v.size()-1
+        int x = v[i];
+        int y = max(v, i+1);
+        return x > x x:y ; 
+    }
+}
+
+Recursion can occur on Linked Lists as well:
+
+Recursion on Linked Lists:
+
+struct node
+{
+    int value; 
+    node* next;
+};
+
+int sum(node* head);
+
+- Shrink: "Removes" the first node (Follows the next pointer)
+
+- Grow: Adds the value of the "removed" node. 
+
+- Base Case: Empty List (=nullptr)
+
+int sum(node* head)
+{
+    if(head == nullptr)
+        return 0; 
+    else 
+        return sum(head -> next) + head -> value;
+                // Rec Call ^^
+}
+
+Linearly Recursive 
+NON Tail Recursive 
+
+sum(2->7->3->/) = 12
+|
+v 
+sum(7->3->/) + 2 = 10 + 2 = 12 
+|
+v 
+sum(3->/) + 7 = 3 + 7 = 10
+|
+v 
+sum(nullptr) + 3 = 0 + 3 = 3 
+|
+v 
+0
+
+int sum(node* head, int s = 0)
+{
+    if(head == nullptr)
+        return s;
+    else
+    return sum(head -> next, s + head -> value);
+}
+
+sum(2->7->3->nullptr, 0) = 12
+|
+v
+sum(7->3->nullptr, 2) = 12
+|
+v 
+sum(3->nullptr, 9) = 12
+|
+v
+sum(nullptr, 12) = 12
+|
+v
+12
+
+
+-----
+
+Module 4 Part 2 - Sorting:
+
+
+Define Sorting:
+
+Eg: 
+    {2, 7, 0, 3} ------------> {0, 3, 7} // Can't lose elements!
+
+                 ------------> {0, 2, 3, 7, 10} // Can't add elements!
+
+                 ------------> {0, 2, 3, 7} //Correct, this is properly sorted
+
+"Sorting" means finding a permutation of the input sequence that puts the values in ascending(desc) order(v[i] < v[i+1])
+
+
+Searching in a sorted sequence:
+
+0   1   2   3   4   5   6   7
+-----------------------------
+0   3   6   8   11  12  15  25
+
+
+find(11) -> (4)
+
+Runtime: O(log n)
+
+---
+
+This is what happens when you look for a value which does NOT exist
+
+find(13) ----> Not found(high < low)

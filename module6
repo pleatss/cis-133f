@@ -1,0 +1,219 @@
+Disjoint sets:
+  - int rep(int x):
+
+    Returns the representative for the group continuing x.
+
+
+      - If x and y are in the same group, then rep(x)==rep(y)
+
+      - If x and y are in different groups, then:
+
+          rep(x)  != rep(y)
+  
+  - bool merge(int a, int b):
+      Merges the groups containing a and b (this does nothing if a and b were already in the same group).
+
+
+      After merge(a,b):
+        rep(a)==rep(b)
+
+    Returns TRUE if two groups were merged, or false if a and b were already in the same group.
+
+    struct node
+    {
+      int index;
+      node* parent;
+      int rank;
+    };
+
+
+    node** forest; //Array of node*
+
+
+    Forest would be the the pointer in this array, with 7 points
+
+
+Basic code for int rep(int x) will look like this:
+
+  node* n = foest[x] ;
+  while(n->parent !=nullptr)
+      n=n->parent;
+    
+      //We should be doing path compression in between ((where these blanks are)), assigning them to be equal to the root there
+  
+  return n->index;
+
+  nullptr
+  ^
+  |
+  1     <- rep
+    0 
+      2 <- start
+
+-----
+
+
+  bool merge:
+
+    a = rep(a);
+    b = rep(b);
+
+    if(a==b) return false;
+
+
+  Merge by rank: 
+
+    forest[b]->parent = forest[a];
+    return true;
+
+    Rank is an APPROXAMATION OF HEIGHT
+
+
+Path Compression:
+  Set all the ->parent along the path to the root, to the root.
+
+
+
+Merge-by-Rank:
+  Rank is an approximation of height.
+
+      rank > height  
+
+    Rank is initialized to 0. 
+
+    When we merge, we choose the node with the larger rank to be the root of the new tree, and the smaller rank becomes the child
+
+    If the ranks are equal, we incremement the rank of the new root.
+
+
+The other half is can we build a binary tree thinking in array based terms?
+
+--
+
+
+Heap (Priority Queue):                                      |  Ordered Array |  Unordered Array | Binary Heap |
+                                                            |                |                  |             |
+  max(): Returns the MAXIMUM item in the (max) heap.        | O(1)(last elem)|     O(n)(loop)   |     O(1)    |
+                                                            |                |                  |             |
+  extract_max(): Removes the maximum item from the heap.    |O(1)(remove last)|    O(n)         |  O(log n)   |
+                                                            |                |                  |             |
+  insert(x): Adds x to the heap.                            |     O(n)       | O(1)(Add at end) |  O(log n)   |
+
+
+
+Binary Heap:
+  A binary (max) heap is a complete binary tree with the heap order property:
+        "At any node n, n is greater than both its children"
+
+
+
+  A complete binary tree has all levels fulls, except (possibly) the bottom, which fills left-to-right.
+
+
+  A binary max heap:
+
+
+                                        62 <- max(root)
+                        48                             57
+                  40        29                    50      43
+            19      21    15    22
+
+
+
+  COMPLETE binary trees always are balanced. 
+
+
+
+Insert(x):
+  1: Place x in the next empty spot in the bottom level // Runs O(1)(O(log n ) in a tree )
+
+  2: As long as x > than its parent, swap UP // Runs O(log n) 
+
+
+
+Extract_Max():
+  1: Copies the last (bottom, rightmost) element to the root.
+                                                                      // Both of these run O(1)
+  2: Removes the last element.
+
+  3: Starting at the root, swap the element with the larger of its two chidlren (stop if element is larger than both children). // Runs O(log n)
+
+
+
+
+Here is the beginning of a heap class:
+
+You will have to include limits 
+
+class bin_heap{
+  public:
+    bin_heap()
+    {
+      h.push_back(INT_MAX);
+    }
+
+    int max(){return h[1];}
+
+    void insert(int x);
+    int extract_max();
+
+
+
+
+  private:
+    vector<int> h; //size > 1
+};
+
+void bin_heap::insert(int x)
+{
+  h.push_back(x);
+
+
+  //Fix-up
+
+  int i = h.size()-1;
+  while(h[i/2] < h[i]){
+      swap(h[i/2], h[i]);
+      i=i/2;
+  }
+}
+
+int bin_heap::extract_max()
+{
+  int x = h[1] ; // Save max for return
+  h[1] = h[h.size()-1];
+  h.pop_back();
+
+  //Fix Down
+  int i=1;
+  while(true){
+    if(i * 2 >= h.size())
+      break; // No Children
+  }
+}
+
+
+
+int largest = i;
+
+if(h[i*2] > h[i])
+    largest = i * 2; //Left child larger 
+
+    if(i*2+1 < h.size() and h[i * 2 + 1] > h[largest])
+      largest = i*2+1; //Right child larger
+
+if(largest==i)
+  break; //Im bigger than both children
+
+swap(h[i], h[largest]);
+
+i=largest ; //2i or 2i+1
+
+}
+
+.
+.
+.
+return x ;
+
+} //extract_max

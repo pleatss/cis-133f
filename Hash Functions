@@ -1,0 +1,140 @@
+Hash Functions:
+
+Base-256 Conversion: Treat the characters (bytes) of the string as "digits" in a base-256 "number".
+
+Base-10 (decimal): "3725"
+
+        - 10 symbols for digits, 0-9.
+
+Base-256: "hello" -> ('o) * 256^0 + ('1') * 256^1 + ('1') * 256^2 + ('c') * 256^3 + ('h') * 256^4
+
+        -  256 symbols(chars) for digits
+
+
+Code:
+
+int base256(string s)
+{
+    int k = 0 ; 
+    for(int i = s.length()-1, p=0 ; i >= 0 ; --i, ++p)
+        k+= unisgned(s[i]) * pow(256, p) ;
+
+    return k;
+}
+
+-   pow works on floats, which have very different behavior for ints.
+
+-   pow is slow
+
+int base256(string s)
+{
+    int k=0 ;
+    for(int i = s.length()-1, p=1 ; i>=0; --i, p *=256)
+        k+= unsigned(s[i]) * p ;
+
+    return k;
+}
+
+-   Number of Additions: n
+-   Number of Multipliers: 2n
+
+int base256(string s)
+{
+    int k=0;
+    for(int i=0; i < s.length(); ++i)
+        k=256*k+unsigned(s[i]);
+    return k;
+
+}
+
+
+
+Characters to get to 0.33s:
+
+Using pow: 10,000,000 chars
+
+Using p: 22,000,000 chars
+
+Horner's Method: 20,000,000 chars
+
+
+int base256(string s)
+{
+    int k=0 ;
+    for(int i = 0; i < s.length(); ++i)
+        k=256*k+unsigned(s[i]) ;
+
+    return k;
+}
+
+
+Remainder Method:
+
+1: k=base256
+2: h=k % m
+
+-   Some m work better than others:
+    -   Avoid powers of 2
+    -   Prime numbers work well
+    -   Numbers with not many factors are good, too.
+
+Module Distributes(over + and *)
+
+* distributes over +:
+    a*(b+c) -> ab + ac
+
+% distributes over both + and *: 
+
+(a+b) %m -> ((a % m) + (b % m)) %m
+
+(a * b) %m -> ((a%m) * (b%m))%m
+
+Multiplicative Method:
+
+1. k = base256 
+2. h = [frac(A*k) * m]
+
+-   A is a floating-point constant
+        A = sqrt(5)-1/2
+
+-   frac(x) gives the fractional part of x 
+            frac(123.456) -> 0.456
+
+
+Code for this will look as follows:
+
+int mult_hash(string s)
+{
+    float k=0 ;
+    for(int i = 0; i<s.length() ; ++i)
+        k=fmod((k*256 +unsigned(s[i])*A, 1) ;
+    return floor(k*m);
+}
+
+Assignment 5: Testing hash functions
+
+How uniform is the distributions of these hash functions?
+
+-   String length
+-   First Char      - Non-uniform (p=10)
+-   Sum-of-chars
+
+-   Remainder Hash
+-   Multiplicative Hash     - Pretty Uniform (p<10)
+
+
+Pearson's X^2 Test (using Boost.Math)
+
+expected = number of words/m
+
+Sum over all of dist:
+
+c2 = m-1 i=0 (expected-dist[i])^2/expected
+
+
+boost::math::chi_squared c2d(m-1.0);
+
+float p = boost::math::cdf(c2d, c2)
+
+
+Extra credit print dist histogram, just printing histogram worth 2 assignments, not it for module 5

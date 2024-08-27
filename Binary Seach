@@ -1,0 +1,291 @@
+0   1   2   3   4   5   6   7   
+-----------------------------
+-3  0   2   7   10  19  21  32
+
+
+You can adjust for to search the value given close to a certain number 
+
+
+Like if we used 
+1,2,3,4,4,4,4,5,6
+
+But with binary search, we can say find me the first value that is larger than 5, or less than 4, and then subtract between the two spots
+
+Binary searches in code look as follow:
+
+int bin_search(const vector<int>& v, int x)
+{
+    int low = 0, high = v.size()-1;
+    while(low <= high){
+        int mid = (low + high)/2;
+    }
+}
+
+// This is a code snippet that is apart of many textbooks that doesnt really work because the numbers in computers are different than math, but for example if you had a big enough vetor towards the end, your lowest/highest integers would come together and then your program would crash, so the safest thing is to:
+
+int bin_search(const vector<int>& v, int x)
+{
+    int low = 0, high = v.size()-1;
+    while(low <= high){
+        int mid = (low - high)/2 + low;
+
+        if(x == v[mid]) return mid; // Found!
+        else if(x < v[mid])     high = mid - 1 ; // Lower Half
+        else /* x > v[mid] */   low = mid + 1 ; // Upper Half
+    }
+    return - 1 ; // Not found!
+}
+
+//Ints on a computer dont behave like ints in math, using subtraction as opposed to addition in the function aids the program - If its not < or > then the math could be off
+
+Size(n) = high  -   low     +   1
+-----------------------------------------------------------------------------------------
+high = (low + high)/2 - 1           |   low = (low + high)/2 + 1                        |
+                                    |                                                   |
+size' = (low + high)/2 - 1 low + 1  |   size' = high - ((low + high)/2 + 1) + 1         |
+                                    |                                                   |
+size' = low + high/2 - 2low/2       |   size' = high -(low + high)/2 -1 + 1             |
+                                    |                                                   |
+size = high - low/2                 |   size' = 2high/2 - low + high/2 = high-low/2     |
+                                    |                                                   |
+size = 2size' + 1                   |                                                   |
+                                    |                                                   |
+size' = size - 1/2 O(log n)         |                                                   |
+-----------------------------------------------------------------------------------------
+
+Sorting:
+
+A sorting algorithm produces a permutatiokn of the input sequence (re-arrangement) which puts the elements into (ascending/descending) order.
+
+
+Attributes of Sorting Algorithms: 
+
+    -   Worst case runtimes: O(n^2) vs O(n log n) vs . . .
+
+    -   Best-case runtime: Better than worst-case (Adaptive)
+                                        vs 
+                                        Same (Not adaptive)
+    
+    -   Memory: O(1)(In-Place) vs O(n) (Not-in-place)
+
+    -   Stable: Preseves existing order, as far as possible 
+
+//Lets use the example for a sorting algorithm for a company data base for example:
+                                                //Sort by first name here:          //Sort by Last Name (Stable Sort)
+    Last    |   First                           |       Last    |   First           |   Last    |   First
+--------------------------------                |   -------------------------       |   ---------------------
+Smith       |   Jane                            |   Smith       |   Allan           |   Brown   |   Beth
+Brown       |   Franklin                        |   Brown       |   Beth            |   Brown   |   Franklin
+Smith       |   Allan                           |   Brown       |   Franklin        |   Smith   |   Allan
+Bram        |   Beth                            |   Smith       |   Jose            |   Smith   |   Jose
+
+
+
+Method #1:
+    For each position i = 0 . . . n - 1 ; 
+            -   Search through the n values for the value that belongs in position i.  // O(n)
+
+
+Method #2:
+    For each value x = v[0] ... v[n-1];
+        - Seach through the n positions
+
+Selection Sort:
+
+void    sel_sort(vector<int>& v)
+{
+    for(int i = 0 ; i < v.size() - 1 ; ++i){
+        //Find smallest in v[i] ... v[n-1]
+        int smallest = i ;
+        for(int j = i + 1 ; j < v.size() ; ++j)
+            if(v[j] < v[smallest])
+                smallest = j ; 
+        swap(v[i], v[smallest]); // Not stable -- "distant" swap
+    }
+}
+
+Bubble Sort: 
+Compare-and-swap
+
+if(v[i] > v[i+1])
+    swap(v[i], v[i+1]);
+
+    the bubble sort compares and swaps the largest and smallest in the sequence and swaps them
+
+    Bubble sort in code looks as follows:
+    void    bub_sort(vector<int>& v)
+    {
+        for(int i = 0 ; i < v.size() - i - 1 ; ++j)
+            if(v[j] > v[j+1]){
+                swap(v[j], v[j+1]);
+            }
+    }
+
+if you had an array like:
+0   2   10  3   6   4   4   5   
+
+it would run through the array and compare the values, for example when it hits 10 here, it swaps with 3, 6, 4, 4, 5, and eventually pushes its way to the front
+
+then it does the same with the rest, sorting it in numerical order, leaving us with a final sequence of:
+
+0   2   3   4   4   5   6   10
+
+Then if the sequence is already sorted we can adapt and add 
+
+
+
+Binary search trees:
+
+A binary search tree is a binary tree with the search order property.
+
+    "At any node n, all n's left descendants are < n, and all n's right descendants are > n."
+
+                                n
+
+                        <n             >n
+
+                                 ^^^---- This figure is assuming there is NO DUPLICATES for right now. 
+
+            struct node
+            {
+                int key ;
+                node* left ;
+                node* right ;
+                //node* parent ;
+                // int height ;
+            };  
+
+            The tree goes by a search order, everything less than is left, everything greater than is right
+
+
+BST Operations:
+
+    - Find(x): Returns a node* to the note contaning x, if it exists, null ptr otherwise.
+
+    - Insert(x): Adds x to the tree, if it doesnt already exist. // 1st, Find(X) ; if it doesnt exist, add a new node where Find is added.
+
+    - Remove(x): Removes x from the tree, if it exists. // 1st, Find(x) ; then, if it exists, remove the node. 
+
+struct node
+{
+    int key ; 
+    node* left ;
+    node* right ;
+};
+
+node* find(node* root, int x)
+{
+    node* n=root ;
+    while(n !=nullptr){
+        if(x==n->key)
+            return n ; // Found!                <- All of this (starting from node* to n=n->right) runs in O(n) which is our worst case 
+        else if(x < n->key)
+            n=n->left ;
+        else // x > n->key
+        n=n->right ; 
+    }
+}
+
+return nullptr ;
+
+
+//Recursive find 
+
+node* find(node* n, int x)
+{
+    if(n==nullptr)
+        return nullptr ;
+    else if(x==n->key)
+        return n ;
+    else if(x < n->key)
+        return find(n->left, x) ;
+    else //x > n->key
+        return find(n->right,x) ;
+} //This snippet is linearly recursive & tail recursive that follows the directions the tree gives us
+
+
+node* insert(node* root, int x)
+{
+    if(root==nullptr)
+        return new node{x, nullptr, nullptr}
+    //  Step 1: Find(x)
+    node* n=root ;
+    p = nullptr ; //n's parent
+
+//n==nullptr, p is n's parent
+
+//Step 2: Add a new node as p's child
+    if(x < p->key)
+        p->left=new node{x,nullptr,nullptr} ;
+    else //x > p->key
+        p->right=new node{x,nullptr,nullptr};
+    //Later: fix balance . . .
+}
+
+// Returns the root of a "new" tree containing x
+// Recursive.
+
+node* insert(node* root, int x)
+{
+    if(root == nullptr)
+        return new node{x, nullptr, nullptr} ;
+    else if(x==root->key)
+        return root ; //Already exists
+    else if(x < root->key)
+        root->left=insert(root->left,x);
+    else // x > root->key
+        root->right = insert(root->irght, x) ;
+        
+    return root ;
+}
+
+
+Remove(x):
+1st, Find(x)
+
+    - Case 0: If the node has 0 children (e.g., 6, 17, 23, 38)
+        (Remove the node by setting ptr to nullptr, then delete)
+    
+    - Case 1: If the node has 1 child (e.g. 5, 22)
+        (Replace the node with its child)
+
+    - Case 2: If the node has 2 children (e.g. 20, 11, 25
+    
+    Predecessor(x) (The LARGEST value, which is smaller than x))
+            Go left ONCE, then right as far as possible
+                (The predecessor does not have a right child, because then that child would be the predecessor)
+
+    Successor(x) (The smallest value, larger than x)
+        Go right ONCE, then go left AS FAR AS POSSIBLE
+            (The successor will never have a left child)
+
+---
+
+Case 2: 2 Children
+
+        1. Find predecessor/successor 
+
+        2. Replace node with pred/succ
+
+        3. Remove pred/succ
+            (Will be case1 or case1)
+--
+
+
+Self-Balancing BSTs
+
+- Splay trees: Amortized-balancedd (balanced on average, over time)
+
+- AVL trees: Height-balanced (Diff in left/right heights at any node must be less than or equal to 1)
+-
+
+    Splay Trees
+
+            -   After every operation (find, insert, remove), performs a Splay, starting at the node of interest 
+
+    Splay(n)
+
+            -   While n is not the root:
+                    - Case Zig: if n is a child of the root
+
+                    - Case Zig-Zig: if n is a left-left/right-right grandchild

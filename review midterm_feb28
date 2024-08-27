@@ -1,0 +1,303 @@
+Stacks and Queues
+
+Stack - A sequence of items where items are addded and removed from the samee end of the sequence.
+push(1); 
+push(2);        // Last in, First out, (LIFO), reverses order 
+push(3);
+
+empty() -> false
+
+pop() -> 3
+pop() -> 2 
+pop() -> 1 
+
+
+
+Other Operations:
+
+top() / peak() // Returns, but does not remove, the top of the stack
+
+size(): Returns the number elemens on the stack (number of pop()'s until it is empty)
+
+full(): True if the stack is full (only on array based stacks)
+
+
+
+Stack Errors
+
+Stack Underflow: pop()/top()/peek() while empty()
+Stack Overflow: push() while full() (array based stacks)
+
+
+List Based Stack 
+
+- We dont need doubly-linked List
+- We dont need tail pointer
+
+Stack Operations:       List Operations:
+
+push(x) ->              push_front(x)
+
+pop() ->                pop_front()
+
+empty() ->              empty()
+
+Linked List Based Stack Example:
+(Since we dont need doubly linked list our nodes just have the value and a single next pointer, then we have our three operations: void push int(x);, int (pop);, bool empty(); - Just like an empty stack this will have be null)
+
+class stack {
+    public:
+    struct node
+    {
+        int value;
+        node* next;
+    };
+
+    void push(int x); 
+    int pop();
+    bool empty();
+
+    private:
+    node* hd = nullptr; //Empty
+};
+
+
+Push:
+
+
+
+1. Create a new node n 
+2. Set n's next to hd (head)
+3. Set hd to n 
+
+void stack :: push (int x)
+{
+    node* n = new node ; 
+    n -> value = x;
+    n -> next = hd;
+
+    hd = n ;
+}
+
+^^^^ All of which can be done in a shorter Example:
+
+void stack::push(int x)
+{
+    hd = new node{x, hd}; // x = n-> value // hd = n -> next
+}
+
+Pop:
+
+1. Call the head to n 
+2. Set head to n's next(head's next)
+3. Delete n 
+
+Ex:
+
+int stack::pop()
+{                         // Checks for stack underflow (hd == nullptr)
+    int x = hd -> value;
+
+    node* n hd; // 1
+
+    hd = n -> next; //2
+
+    delete n; //3
+
+    return x;
+}
+
+For empty:
+
+bool stack::empty()             //All of this bool function is O(1)
+{
+    return hd == nullptr;  
+}
+
+
+
+^^^^^ These are all list based stacks
+
+
+Array Based Stacks:
+
+Push:
+st : 1, 2, 3, 4, 5, 6, 7
+
+cap: 8 
+
+top: 
+
+--------
+push(1);
+push(2);
+push(3);
+-------
+
+Ex code:
+
+class stack{
+    public:
+    //
+    //
+    //
+    void push(int x);
+    
+    int pop();
+
+    bool empty()
+    {
+        return top == -1 ;
+    }
+
+    bool full(){return top == cap -1 ;}
+
+    private:
+    int* st;
+    int cap;
+    int top = -1 ; //Empty
+};
+
+void stack::push(int x)
+{
+    if(full())
+    ~~~ Stack Overflow!! ~~~
+    else{
+        ++top ;
+        st[top] = x ; // Both these 2 lines could Could also be written as st[++top] = x ;
+    }
+}
+
+Pop:
+int stack::pop()
+{
+    if(empty())
+    ~~~ Stack Underflow!! ~~~~
+    else{
+    --top ; 
+    return st[top+1]; //These 3 lines could be written as return st[top--]; // All of our key operations are O of 1 O(1)
+    }
+}
+
+Use cases for Stack lists:
+
+    Loops over chars c in string:
+        
+        - If c is an OPEN symbol:
+            
+            -Push (c)
+
+        - If c is a CLOSE symbol:
+
+            - Check c matches top():
+
+                    -If they dont match, Pop()
+
+                    -If they dont match,' Error! '
+
+If the Stack is not empty, then that will be another, ' Error! ' 
+
+"([{[]<>}])"
+
+^
+|
+This is a stack that is going to record this and match in order, bottom left to right, but reads the string as bottom to up :
+' Begins matching (, to [, to {, to [, to ], to <, to >, to }, to (, to ), to ], to ) '
+
+"([)]"
+Here, the ")" doesnt match so it throws an error 
+
+"([{}]"
+Here, the stack is not empty at the end of the string, throwing an error
+
+You can make a calculator, but you have to follow PEMDAS:
+
+"1+2+3*7"
+is infix notation
+(operators go in-between operands)
+
+Post fix Notation:
+Operators go AFTER their operands
+
+- If the input looks like a number, then push it. 
+
+- If the input looks like an operator, such a (+, *, /, -), then pop two values, perform the operation, push the result.
+
+Example run of the calculation ' 1 2 + ' 
+
+1_2_ +
+^ - This will out put 3, goes in left to right order, no need for parantheses
+
+3 7 * 1 2 + + 
+
+^ - Will output 24, moving from left to right pushing each operator 
+
+
+
+Queues:
+Stack: 
+    Elements are added/removed on the same end of the sequence. 
+
+Queue:
+    Elements are added to ONE end of the sequence, but are removed from the opposite end of the sequence. 
+
+        Queses are like lines:
+            - You're added at the back, but as others are removed from the front, you get closer to the front until you subsequently get removed as well. 
+
+                back         front
+              ->  3     2    1 -> 
+
+              enqueue(1);
+              enqueue(2);
+              enqueue(3);
+              empty(); -> False             Remember FIFO, First In, First Out
+              dequeue() -> 1
+              dequeue() -> 2 
+              dequeue() -> 3
+
+Building a queue on a list (List Based Queue):
+
+enqueue(x) -> push_back
+
+dequeue() -> push_front
+
+
+Other Operations:
+    front()/peek() : Returns, but does not remove the front Elements
+
+    size() : Returns the number of elements that are in the queue
+
+   // If you build a queue on an array:
+
+    full() : Returns true if the queue is full.
+---
+
+Queue Errors:
+    Queue Underflow: dequeue()/front()/peek() while empty()
+
+    Queue Overflow: enqueue()'ing when the queue is full() // Array Based Queue
+---
+
+Array Based Queues: 
+
+    0   1   2   3   4   5   6   7
+Q:  1   2   3   7
+
+Cap: 8 
+
+/*Front of queue*/      /*Back of Queue*/
+f:  1                    b: 3
+
+enqueue(1);     deqeue()
+enqueue(2);
+enqueue(3);
+enqueue(7);
+
+Enqueue:                    Dequeue:
+++b;                        ++f;
+if(b == cap)                if(f == cap)
+b = 0;                      ++f;
+q[b] = x;                   if(f == cap)
+                                f=0;
+
+        Both are O(1)

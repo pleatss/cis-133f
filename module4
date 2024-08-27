@@ -1,0 +1,83 @@
+MODULE 4:
+
+Binary (Search) Trees:
+
+A binary tree is a collection of nodes, where each node has a:
+
+key( which is its value), a LEFT child(node), and a RIGHT child(node).
+
+                                        7
+                                    29      15 
+                            78      51      43      -2                  //Internal Nodes
+                                71      9               47              // all nodes other than the root & leaves
+
+The arrows pointing down to each node are pointers, you can view this like a singley linked list though where you can only go one way, down.
+
+
+The end nodes in the tree are called leaves, which are nodes where they have 0 children
+
+
+In compsci trees grow upside down, leaves at the bottom root at the top(head)
+
+Classification of Binary Trees:
+
+        Balanced: h = log2n
+
+        Degenerate: h = n 
+
+        Full: Every node has 0 or 2 children
+
+        Complete: Every 'level' of the tree is full, except maybe the bottom, which fills left-to-right.
+----
+
+Binary Search Trees (BSTs)
+A binary search tree is a binary tree with the search order property. 
+
+    "At any node n, all ns left descendants will have keys < n, and all ns right descendants will have keys > n."
+
+    (Note: This definition does not allow duplicate keys)
+
+--
+
+
+If you search for a value but is less than you go left, more than you go right, if the value doesnt exist on your tree you fall off
+
+What Binary Search trees look like in code:
+
+struct node
+{
+    int key;
+    node* left;
+    node* right;
+    //node* parent'
+    //node* height
+};
+
+int size(node* root)
+{
+    if(root == nullptr)
+        return 0;
+    else
+        return size(root->left)+
+               size(root->right)+
+               1 ;
+}
+
+If we want to know what the largest maximum value in the tree:
+
+int max(node* root)
+{
+    node* n = root;
+    while(n->right != nullptr)
+        n=n->right ;
+
+    return n->key;
+}
+
+max(
+    height(root->left),
+    height(root->right))
++1;
+
+
+The main task of this module is keeping a binary tree balanced 
